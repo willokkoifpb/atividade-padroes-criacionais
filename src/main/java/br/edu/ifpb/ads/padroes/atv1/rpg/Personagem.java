@@ -1,6 +1,12 @@
 package br.edu.ifpb.ads.padroes.atv1.rpg;
 
-public class Personagem {
+import java.util.Arrays;
+
+/**
+ * Classe que representa um Personagem no RPG.
+ * Implementa Cloneable para suportar o padrão Prototype.
+ */
+public class Personagem implements Cloneable {
 
     private String nome;
     private String raca;
@@ -27,7 +33,7 @@ public class Personagem {
         this.mana = mana;
         this.arma = arma;
         this.armadura = armadura;
-        this.habilidades = habilidades;
+        this.habilidades = habilidades != null ? habilidades.clone() : null;
     }
 
     // Getters e Setters básicos
@@ -79,10 +85,35 @@ public class Personagem {
         this.nome = nome;
     }
 
+    /**
+     * Implementação do padrão Prototype - clona o personagem com seus equipamentos.
+     */
+    @Override
+    public Personagem clone() {
+        try {
+            Personagem clone = (Personagem) super.clone();
+            if (this.arma != null) {
+                clone.arma = this.arma.clone();
+            }
+            if (this.armadura != null) {
+                clone.armadura = this.armadura.clone();
+            }
+            if (this.habilidades != null) {
+                clone.habilidades = this.habilidades.clone();
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Erro ao clonar personagem", e);
+        }
+    }
+
     @Override
     public String toString() {
-        return String.format("%s - %s %s (F:%d, I:%d, A:%d, V:%d, M:%d)",
-                nome, raca, classe, forca, inteligencia, agilidade, vida, mana);
+        return String.format("%s - %s %s (F:%d, I:%d, A:%d, V:%d, M:%d) | Arma: %s | Armadura: %s | Habilidades: %s",
+                nome, raca, classe, forca, inteligencia, agilidade, vida, mana,
+                arma != null ? arma.getNome() : "Nenhuma",
+                armadura != null ? armadura.getNome() : "Nenhuma",
+                habilidades != null ? Arrays.toString(habilidades) : "Nenhuma");
     }
 
 }

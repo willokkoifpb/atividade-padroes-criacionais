@@ -1,6 +1,6 @@
 package br.edu.ifpb.ads.padroes.atv1.rpg;
 
-public class Arma {
+public class Arma implements Cloneable {
 
     private String nome;
     private int dano;
@@ -22,5 +22,23 @@ public class Arma {
 
     public String getTipo() {
         return tipo;
+    }
+
+    @Override
+    public Arma clone() {
+        try {
+            return (Arma) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Erro ao clonar arma", e);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Arma{" +
+                "nome='" + nome + '\'' +
+                ", dano=" + dano +
+                ", tipo='" + tipo + '\'' +
+                '}';
     }
 }
